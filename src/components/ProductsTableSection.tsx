@@ -1,0 +1,174 @@
+import { useEffect, useState } from "react";
+import { Table } from "../shared/ui/Table/Table";
+import { Column } from "../shared/ui/Table/Table.types";
+import { Product } from "../shared/types/product";
+import Skeleton from "../shared/ui/Loader/Skeleton";
+import { Button } from "../shared/ui/Button/Button";
+import { useProductsTable } from "../features/products/hooks/useProductsTable";
+import { ProductActionsCell } from "./ProductActionsCell";
+import { ProductsFooter } from "./ProductsFooter";
+import { Checkbox } from "../shared/ui/Checkbox/Checkbox";
+import styles from "../pages/ProductsPage.module.css";
+
+interface Props {
+  data: Product[];
+  isFetching: boolean;
+  isLoading: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+  page: number;
+  total: number;
+  totalPages: number;
+  start: number;
+  end: number;
+  onPageChange: (page: number) => void;
+  onAddClick: () => void;
+}
+
+export const ProductsTableSection = ({
+  data,
+  isFetching,
+  isLoading,
+  isSuccess,
+  isError,
+  page,
+  total,
+  totalPages,
+  start,
+  end,
+  onPageChange,
+  onAddClick,
+}: Props) => {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    if (isLoading || isFetching) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setProgress(30);
+
+      const interval = window.setInterval(() => {
+        setProgress((prev) => (prev < 90 ? prev + 5 : prev));
+      }, 200);
+
+      return () => clearInterval(interval);
+    }
+
+
+    setProgress(100);
+
+    const timeout = window.setTimeout(() => {
+      setProgress(0);
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, [isLoading, isFetching]);
+
+  const {
+    selectedProducts,
+    sortBy,
+    order,
+    handleSelectAll,
+    handleSelectProduct,
+    handleSort,
+    clearSelection,
+  } = useProductsTable(data, () => onPageChange(1));
+
+  const columns: Column<Product>[] = [
+    {
+      key: "selection",
+      title: (
+        <Checkbox
+          checked={data.length > 0 && selectedProducts.size === data.length}
+          onChange={handleSelectAll}
+        />
+      ),
+      render: (_, row) => (
+        <Checkbox
+          checked={selectedProducts.has(row.id)}
+          onChange={() => handleSelectProduct(row.id)}
+        />
+      ),
+    },
+    { key: "title", title: "Название", sortable: true },
+    { key: "brand", title: "Бренд", sortable: true },
+    { key: "price", title: "Цена, ₽", sortable: true },
+    {
+      key: "rating",
+      title: "Рейтинг",
+      sortable: true,
+      render: (v) => (
+        <span style={{ color: v < 3 ? "red" : "inherit" }}>{v}</span>
+      ),
+    },
+    {
+      key: "actions",
+      title: "",
+      render: (_, row) => <ProductActionsCell product={row} />,
+    },
+  ];
+
+  const showInitialLoader = isLoading;
+  const showEmpty = isSuccess && !isFetching && data.length === 0;
+
+ return (
+  <div className={styles.tableWrapper}>
+    {progress > 0 && (
+      <div className={styles.progressBar}>
+        <div
+          className={styles.progress}
+          style={{
+            width: `${progress}%`,
+            transition: "width 0.2s linear",
+          }}
+        />
+        <span className={styles.span}>Загрузка...</span>
+      </div>
+    )}
+
+    <div className={styles.tableHeader}>
+      <h3>Все позиции</h3>
+      <Button onClick={onAddClick}>+ Добавить</Button>
+    </div>
+
+    {isError ? (
+      <div className={styles.errorState}>
+        Ошибка загрузки данных
+      </div>
+    ) : showInitialLoader ? (
+      <Skeleton rows={5} columns={columns.length} />
+    ) : showEmpty ? (
+      <div className={styles.emptyState}>Товары не найдены</div>
+    ) : (
+      <>
+        <div className={isFetching ? styles.tableFetching : ""}>
+          <Table<Product>
+            data={data}
+            columns={columns}
+            sortBy={sortBy}
+            order={order}
+            onSort={handleSort}
+            rowClassName={(row) =>
+              selectedProducts.has(row.id) ? styles.selectedRow : ""
+            }
+          />
+        </div>
+
+        {total > 0 && (
+          <ProductsFooter
+            page={page}
+            totalPages={totalPages}
+            start={start}
+            end={end}
+            total={total}
+            onPageChange={(p) => {
+              clearSelection();
+              onPageChange(p);
+            }}
+          />
+        )}
+      </>
+    )}
+  </div>
+);
+
+};

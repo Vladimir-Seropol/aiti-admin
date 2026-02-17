@@ -1,0 +1,40 @@
+.button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  transition: 0.2s ease;
+  cursor: pointer;
+}
+
+.primary {
+  background: #3a31e6;
+  color: white;
+}
+
+.primary:hover {
+  background: #160d7e;
+}
+
+.secondary {
+  background: #e5e7eb;
+}
+
+.secondary:hover {
+  background: #d1d5db;
+}
+
+.link {
+  background: none;
+  padding: 2px;
+  color: #3a31e6;
+  font-weight: 700;
+  text-decoration:underline;
+   text-underline-offset: 2px;
+}
+
+.link:hover {
+  background: none;
+  text-decoration: none;
+opacity: 0.8;
+}
