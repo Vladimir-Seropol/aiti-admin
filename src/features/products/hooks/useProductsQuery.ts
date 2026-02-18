@@ -4,28 +4,33 @@ import { ProductResponse } from "../../../shared/types/product";
 import { useProductsStore } from "../../auth/productsStore";
 import { useDebounce } from "./useDebounce";
 
-
 const LIMIT = 20;
-const STALE_TIME = 10 * 60 * 1000;
-const GC_TIME = 20 * 60 * 1000;
+const STALE_TIME = 5 * 60 * 1000;
+const GC_TIME = 10 * 60 * 1000;
 
 export const useProductsQuery = (search: string, page: number) => {
   const { sortBy, order } = useProductsStore();
-  const debouncedSearch = useDebounce(search, 3000);
+  const debouncedSearch = useDebounce(search, 400);
 
   const query = useQuery<ProductResponse>({
     queryKey: ["products", debouncedSearch, sortBy, order, page],
-    queryFn: () =>
+
+    queryFn: ({ signal }) =>
       fetchProducts(
         debouncedSearch,
         sortBy ?? null,
         order ?? null,
         page,
-        LIMIT
+        LIMIT,
+        signal 
       ),
+
     placeholderData: keepPreviousData,
+
     staleTime: STALE_TIME,
     gcTime: GC_TIME,
+
+    refetchOnWindowFocus: false,
     retry: 1,
   });
 
@@ -43,8 +48,8 @@ export const useProductsQuery = (search: string, page: number) => {
     start,
     end,
 
-    isLoading: query.isLoading,
-    isFetching: query.isFetching,
+    isLoading: query.isLoading,    
+    isFetching: query.isFetching,  
     isSuccess: query.isSuccess,
     isError: query.isError,
   };
