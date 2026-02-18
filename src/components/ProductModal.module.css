@@ -29,3 +29,20 @@
   gap: 12px;
   justify-content: flex-end;
 }
+
+
+.productName {
+  display: flex;
+  align-items: center;  
+  gap: 12px;
+}
+
+.productThumb {
+  width: 24px;
+  height: 24px;
+  object-fit: cover;     
+  border-radius: 6px;
+  flex-shrink: 0;        
+}
+
+

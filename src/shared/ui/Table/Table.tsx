@@ -8,7 +8,7 @@ interface Props<T> {
   sortBy: keyof T | null
   order: SortOrder
   onSort?: (field: keyof T) => void
-  rowClassName?: (row: T) => string | undefined // Добавили пропс
+  rowClassName?: (row: T) => string | undefined 
 }
 
 export function Table<T extends { id: number }>({
@@ -17,7 +17,7 @@ export function Table<T extends { id: number }>({
   sortBy,
   order,
   onSort,
-  rowClassName, // Добавили деструктуризацию
+  rowClassName, 
 }: Props<T>) {
   return (
     <table className={styles.table}>

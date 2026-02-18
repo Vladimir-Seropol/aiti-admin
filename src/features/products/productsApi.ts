@@ -27,7 +27,7 @@ export const fetchProducts = async (
 
   const response = await api.get<ProductResponse>(url, {
     params,
-    signal, // 👈 React Query сам отменит старый запрос
+    signal,
   });
 
   return response.data;

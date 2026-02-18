@@ -32,6 +32,11 @@ export const ProductsPage = () => {
     setPage(newPage);
   };
 
+    const handleRefresh = () => {
+    queryClient.invalidateQueries({ queryKey: ["products"] });
+    addToast("Данные обновлены");
+  };
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleAddProduct = (_: Omit<Product, "id">) => {
 
@@ -39,6 +44,10 @@ export const ProductsPage = () => {
     addToast("Товар успешно добавлен");
     setIsModalOpen(false);
   };
+
+
+
+  
 
   return (
     <MainLayout
@@ -51,6 +60,7 @@ export const ProductsPage = () => {
     >
       <ProductsTableSection
         data={products}
+         onRefresh={handleRefresh}
         isFetching={isFetching}
         isLoading={isLoading}
         isSuccess={isSuccess}

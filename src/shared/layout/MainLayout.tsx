@@ -25,12 +25,19 @@ export const MainLayout = ({
         </div>
 
         {onSearchChange && (
-          <input
-            className={styles.searchInput}
-            placeholder="Найти"
-            value={searchValue}
-            onChange={(e) => onSearchChange(e.target.value)}
-          />
+          <div className={styles.searchWrapper}>
+            <img 
+              src="/search.png" 
+              alt="search" 
+              className={styles.searchIcon}
+            />
+            <input
+              className={styles.searchInput}
+              placeholder="Найти"
+              value={searchValue}
+              onChange={(e) => onSearchChange(e.target.value)}
+            />
+          </div>
         )}
       </header>
 
