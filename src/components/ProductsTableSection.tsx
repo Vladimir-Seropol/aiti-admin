@@ -64,14 +64,15 @@ export const ProductsTableSection = ({
   }, [isLoading, isFetching]);
 
   const {
-    selectedProducts,
-    sortBy,
-    order,
-    handleSelectAll,
-    handleSelectProduct,
-    handleSort,
-    clearSelection,
-  } = useProductsTable(data, () => onPageChange(1));
+  data: sortedData,
+  selectedProducts,
+  sortBy,
+  order,
+  handleSelectAll,
+  handleSelectProduct,
+  handleSort,
+  clearSelection,
+} = useProductsTable(data, () => onPageChange(1));
 
   const columns: Column<Product>[] = [
     {
@@ -142,7 +143,7 @@ export const ProductsTableSection = ({
       <>
         <div className={isFetching ? styles.tableFetching : ""}>
           <Table<Product>
-            data={data}
+            data={sortedData}
             columns={columns}
             sortBy={sortBy}
             order={order}

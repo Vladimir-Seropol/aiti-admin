@@ -11,7 +11,7 @@ const GC_TIME = 20 * 60 * 1000;
 
 export const useProductsQuery = (search: string, page: number) => {
   const { sortBy, order } = useProductsStore();
-  const debouncedSearch = useDebounce(search, 300);
+  const debouncedSearch = useDebounce(search, 3000);
 
   const query = useQuery<ProductResponse>({
     queryKey: ["products", debouncedSearch, sortBy, order, page],
