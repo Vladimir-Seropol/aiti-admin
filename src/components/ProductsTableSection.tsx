@@ -177,6 +177,7 @@ export const ProductsTableSection = ({
             className={styles.refreshIcon}
             onClick={onRefresh}
             style={{ cursor: "pointer" }}
+            title="Обновить данные"
           />
           <Button onClick={onAddClick}>+ Добавить</Button>
         </div>
