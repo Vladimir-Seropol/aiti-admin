@@ -254,3 +254,10 @@
 .refresh img:hover {
     opacity: 1;              
 }
+
+@media screen and (max-width: 725px) {
+  .tableWrapper {
+    overflow-x: auto;
+  }
+ 
+}
