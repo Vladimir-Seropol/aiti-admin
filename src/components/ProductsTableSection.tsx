@@ -164,7 +164,8 @@ export const ProductsTableSection = ({
               transition: "width 0.2s linear",
             }}
           />
-          <span className={styles.span}>Загрузка...</span>
+          <span className={styles.spanLoader}>Загрузка...</span>
+
         </div>
       )}
 

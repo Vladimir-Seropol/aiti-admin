@@ -78,7 +78,7 @@
   animation: progressAnimation 2s linear infinite;
 }
 
-.span {
+.spanLoader {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -258,6 +258,10 @@
 @media screen and (max-width: 725px) {
   .tableWrapper {
     overflow-x: auto;
+  }
+
+  .spanLoader{
+    font-size: 8px;
   }
  
 }
