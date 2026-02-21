@@ -18,17 +18,12 @@ export const ProductsFooter = ({
   total,
   onPageChange,
 }: Props) => {
-
   if (!total || totalPages <= 0) return null;
-
-
-  const safeStart = Math.min(start, total);
-  const safeEnd = Math.min(end, total);
 
   return (
     <div className={styles.tableFooter}>
       <div className={styles.tableInfo}>
-        Показано {safeStart}-{safeEnd} из {total}
+        Показано {start}-{end} из {total}
       </div>
 
       <Pagination
